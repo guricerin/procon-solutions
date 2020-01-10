@@ -1,0 +1,37 @@
+open System
+open System.Collections.Generic
+
+[<AutoOpen>]
+module Cin =
+    let read f = stdin.ReadLine() |> f
+    let reada f = stdin.ReadLine().Split() |> Array.map f
+    let readChars() = read string |> Seq.toArray
+    let readInts() = readChars() |> Array.map (fun x -> Convert.ToInt32(x.ToString()))
+
+[<AutoOpen>]
+module Cout =
+    let writer = new IO.StreamWriter(new IO.BufferedStream(Console.OpenStandardOutput()))
+    let print (s: string) = writer.Write s
+    let println (s: string) = writer.WriteLine s
+    let inline puts (s: ^a) = string s |> println
+
+let solve() =
+    let s = read string |> fun x -> x.Split(':')
+    let h = Convert.ToInt32(s.[0]) * 60
+    let m = Convert.ToInt32(s.[1])
+
+    let hm = (h + m + 5) % (24 * 60)
+    let h = hm / 60
+    let m = hm % 60
+    let h = h.ToString("D2")
+    let m = m.ToString("D2")
+    sprintf "%s:%s" h m |> puts
+    ()
+
+[<EntryPoint>]
+let main _ =
+    try
+        solve()
+    with e -> printfn "%s" (e.ToString())
+    writer.Close()
+    0 // return an integer exit code

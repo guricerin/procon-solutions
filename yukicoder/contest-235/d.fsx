@@ -143,7 +143,7 @@ let main() =
     // https://mathtrain.jp/sigma の「二重和の計算」を参照
     // Σ(0 <= i <= n-1) Σ(0 <= j <= i) { a_i * a_j }
     // -> Σ(0 <= i <= n-1) { a_i } * Σ(0 <= j <= i) { a_j }
-    // -> a_i * <a_iまでの累積和>
+    // -> Σ(0 <= i <= n-1) { a_i * <a_iまでの累積和> }
     let acc = fib |> Array.scan (+) ModInt.zero
     let mutable ans = ModInt.zero
     for i in 0 .. n - 1 do

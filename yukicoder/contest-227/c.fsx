@@ -22,26 +22,22 @@ module Cout =
 let main() =
     let n = read int
     let bs = reada int64
+    let bs = Array.append bs [| (Array.last bs) |]
     let fs = Array.zeroCreate (n + 1)
     let gs = Array.zeroCreate (n + 1)
-    for i in 0 .. n - 2 do
-        if bs.[i] <= bs.[i + 1] then fs.[i] <- 1L
-        if bs.[i] >= bs.[i + 1] then gs.[i] <- 1L
-    let fcum = Array.zeroCreate (n + 1)
-    let gcum = Array.zeroCreate (n + 1)
     for i in 0 .. n - 1 do
-        fcum.[i + 1] <- fcum.[i] + fs.[i]
-        gcum.[i + 1] <- gcum.[i] + gs.[i]
+        fs.[i + 1] <- fs.[i] + if bs.[i] <= bs.[i + 1] then 1 else 0
+        gs.[i + 1] <- gs.[i] + if bs.[i] >= bs.[i + 1] then 1 else 0
     let q = read int
     for i in 0 .. q - 1 do
         let [| l; r |] = reada int
-        let diff = r - l |> int64
+        let diff = r - l
 
         let okf =
-            if fcum.[r] - fcum.[l] = diff then 1 else 0
+            if fs.[r] - fs.[l] = diff then 1 else 0
 
         let okg =
-            if gcum.[r] - gcum.[l] = diff then 1 else 0
+            if gs.[r] - gs.[l] = diff then 1 else 0
 
         sprintf "%d %d" okf okg |> puts
     ()
